@@ -5,10 +5,48 @@ import SelectMetric from './SelectMetric'
 import { connect } from 'react-redux';
 import MetricCardContainer from './MetricCardContainer';
 import LineChart from './LineChart'
+import dayjs from 'dayjs'
 
 const Dashboard = (props) => {
   const [selectedMetrics, onSelectedMetricsChange] = useState([])
   const [getMetrics, onGetMetrics] = useState([])
+  const [getGraphMetrics, onGetGraphMetrics] = useState([])
+  useEffect(() => {
+    const multipleMeasurements = selectedMetrics && selectedMetrics.reduce((currStr, metric) => {
+      // return ({ metricName: `${metric.value}` })
+      return currStr += `{ metricName: "${metric.value}", after: ${dayjs().subtract(10, 'minute').toDate().getTime()} },`
+    }, '') || ''
+    const test = `[${multipleMeasurements}]`
+    console.log({ test })
+    fetch('https://react.eogresources.com/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `
+        { getMultipleMeasurements(input: ${test} ) {
+            metric
+            measurements {
+              unit
+              metric
+              at
+              value
+            }
+          }
+        }
+      ` }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.warn('GRAPH_DATA', { data: res.data })
+        if (res.data && res.data.getMultipleMeasurements && res.data.getMultipleMeasurements.length) {
+          console.warn('GRAPH_DATA', { getMultipleMeasurements: res.data.getMultipleMeasurements })
+          onGetGraphMetrics(res.data.getMultipleMeasurements)
+        }
+      });
+
+    return () => {
+    };
+  }, [selectedMetrics])
   useEffect(() => {
     fetch('https://react.eogresources.com/graphql', {
       method: 'POST',
@@ -35,7 +73,7 @@ const Dashboard = (props) => {
         </div>
       </div>
       <div>
-        <LineChart />
+        <LineChart {...props} getGraphMetrics={getGraphMetrics} />
       </div>
       <Subscriber />
     </div >
