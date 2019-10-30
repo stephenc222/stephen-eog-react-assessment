@@ -33,10 +33,10 @@ const App = props => (
     <CssBaseline />
     <Provider store={store}>
       <Wrapper>
-        <Header />
+        {/* <Header /> */}
         <Dashboard />
-        <NowWhat />
-        <ToastContainer />
+        {/* <NowWhat /> */}
+        {/* <ToastContainer /> */}
       </Wrapper>
     </Provider>
   </MuiThemeProvider>

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useQuery } from "urql";
 import Subscriber from './Subscriber'
 import SelectMetric from './SelectMetric'
-import MetricCard from './MetricCard'
 import { connect } from 'react-redux';
 import MetricCardContainer from './MetricCardContainer';
+import LineChart from './LineChart'
 
 const Dashboard = (props) => {
   const [selectedMetrics, onSelectedMetricsChange] = useState([])
@@ -24,15 +24,21 @@ const Dashboard = (props) => {
     };
   }, [])
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
       <div>
         <MetricCardContainer selectedMetrics={selectedMetrics}  {...props} />
       </div>
+      <div style={{ display: 'flex' }}>
+        <div style={{ minWidth: '75%', padding: 1 }} />
+        <div style={{ minWidth: '25%', maxWidth: '25%' }}>
+          <SelectMetric options={getMetrics} selectedMetrics={selectedMetrics} onSelectedMetricsChange={onSelectedMetricsChange} />
+        </div>
+      </div>
       <div>
-        <SelectMetric options={getMetrics} selectedMetrics={selectedMetrics} onSelectedMetricsChange={onSelectedMetricsChange} />
+        <LineChart />
       </div>
       <Subscriber />
-    </div>
+    </div >
   )
 }
 const mapStateToProps = (state) => {
