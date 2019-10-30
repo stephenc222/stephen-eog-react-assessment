@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import Paper from "@material-ui/core/Paper";
 import gql from 'graphql-tag';
 import { useDispatch, useSelector } from "react-redux";
 import { useSubscription } from 'urql';
+import { METRIC_DATA_RECEIVED } from '../../store/actions'
 
 const NewMessageSubQuery = gql`
   subscription newMeasurement {
@@ -14,14 +16,13 @@ const NewMessageSubQuery = gql`
   }
 `;
 
-export const Messages = () => {
-  // TODO: temporary UI state to render update
-  const [tempUIState, updateTempUIState] = useState({})
+export const Messages = (props) => {
+  const dispatch = useDispatch()
   const handleSubscription = (
     messages = [],
     response
   ) => {
-    updateTempUIState(response.newMeasurement)
+    dispatch({ type: METRIC_DATA_RECEIVED, payload: response.newMeasurement })
     return []
   };
 
@@ -40,9 +41,8 @@ export const Messages = () => {
 
 
   return (
-    <ul>
-      {JSON.stringify(tempUIState, null, 0)}
-    </ul>
+    <>
+    </>
   );
 };
 
