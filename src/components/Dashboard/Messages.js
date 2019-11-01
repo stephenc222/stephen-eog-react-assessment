@@ -6,14 +6,14 @@ import { useSubscription } from 'urql';
 import { METRIC_DATA_RECEIVED } from '../../store/actions'
 
 const NewMessageSubQuery = gql`
-  subscription newMeasurement {
-    newMeasurement{
-      metric
-      at
-      value
-      unit
-    }
-  }
+	subscription newMeasurement {
+		newMeasurement{
+			metric
+			at
+			value
+			unit
+		}
+	}
 `;
 
 export const Messages = (props) => {
@@ -36,7 +36,7 @@ export const Messages = (props) => {
   }
 
   if (res.data === undefined) {
-    return <p>No new messages</p>;
+    return null;
   }
 
 

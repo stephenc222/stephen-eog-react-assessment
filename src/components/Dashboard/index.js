@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery } from "urql";
+import { useQuery } from "urql"
 import Subscriber from './Subscriber'
 import SelectMetric from './SelectMetric'
-import { connect } from 'react-redux';
-import MetricCardContainer from './MetricCardContainer';
+import { connect } from 'react-redux'
+import MetricCardContainer from './MetricCardContainer'
 import LineChart from './LineChart'
 import dayjs from 'dayjs'
 
@@ -11,19 +11,19 @@ const Dashboard = (props) => {
   const [selectedMetrics, onSelectedMetricsChange] = useState([])
   const [getMetrics, onGetMetrics] = useState([])
   const [getGraphMetrics, onGetGraphMetrics] = useState([])
+
   useEffect(() => {
     const multipleMeasurements = selectedMetrics && selectedMetrics.reduce((currStr, metric) => {
       // return ({ metricName: `${metric.value}` })
-      return currStr += `{ metricName: "${metric.value}", after: ${dayjs().subtract(10, 'minute').toDate().getTime()} },`
+      return currStr += `{ metricName: "${metric.value}", after: ${dayjs().subtract(1, 'minute').toDate().getTime()} },`
     }, '') || ''
-    const test = `[${multipleMeasurements}]`
-    console.log({ test })
+    const input = `[${multipleMeasurements}]`
     fetch('https://react.eogresources.com/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: `
-        { getMultipleMeasurements(input: ${test} ) {
+        { getMultipleMeasurements(input: ${input} ) {
             metric
             measurements {
               unit
@@ -37,15 +37,13 @@ const Dashboard = (props) => {
     })
       .then(res => res.json())
       .then(res => {
-        console.warn('GRAPH_DATA', { data: res.data })
         if (res.data && res.data.getMultipleMeasurements && res.data.getMultipleMeasurements.length) {
-          console.warn('GRAPH_DATA', { getMultipleMeasurements: res.data.getMultipleMeasurements })
           onGetGraphMetrics(res.data.getMultipleMeasurements)
         }
-      });
+      })
 
     return () => {
-    };
+    }
   }, [selectedMetrics])
   useEffect(() => {
     fetch('https://react.eogresources.com/graphql', {
@@ -56,10 +54,10 @@ const Dashboard = (props) => {
       .then(res => res.json())
       .then(res => {
         onGetMetrics(res.data.getMetrics)
-      });
+      })
 
     return () => {
-    };
+    }
   }, [])
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -73,7 +71,7 @@ const Dashboard = (props) => {
         </div>
       </div>
       <div>
-        <LineChart {...props} getGraphMetrics={getGraphMetrics} />
+        <LineChart {...props} getGraphMetrics={selectedMetrics && selectedMetrics.length && getGraphMetrics || []} />
       </div>
       <Subscriber />
     </div >
