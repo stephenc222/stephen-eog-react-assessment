@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery } from "urql"
 import Subscriber from './Subscriber'
 import SelectMetric from './SelectMetric'
 import { connect } from 'react-redux'
@@ -15,8 +14,8 @@ const Dashboard = (props) => {
   useEffect(() => {
     const multipleMeasurements = selectedMetrics && selectedMetrics.reduce((currStr, metric) => {
       return currStr += `{ metricName: "${metric.value}", after: ${dayjs().subtract(1, 'minute').toDate().getTime()} },`
-    }, '') || ''
-    const input = `[${multipleMeasurements}]`
+    }, '')
+    const input = `[${multipleMeasurements || ''}]`
     fetch('https://react.eogresources.com/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -70,7 +69,7 @@ const Dashboard = (props) => {
         </div>
       </div>
       <div>
-        <LineChart {...props} getGraphMetrics={selectedMetrics && selectedMetrics.length && getGraphMetrics || []} />
+        <LineChart {...props} getGraphMetrics={selectedMetrics && selectedMetrics.length && getGraphMetrics} />
       </div>
       <Subscriber />
     </div >

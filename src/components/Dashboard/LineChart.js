@@ -3,11 +3,6 @@ import 'chart.js'
 import { LineChart as RLineChart } from 'react-chartkick'
 import dayjs from 'dayjs'
 
-const data = [
-  { "name": "Workout", "data": { "2017-01-01": 3, "2017-01-02": 4, } },
-  { "name": "Call parents", "data": { "2017-01-01": 5, "2017-01-02": 3, } }
-]
-
 // TODO: assumes "metric will be added on end of getGraphMetrics"
 const transformChartData = ({ metric, getGraphMetrics }) => {
   if (!getGraphMetrics.length) {
@@ -31,8 +26,8 @@ const transformChartData = ({ metric, getGraphMetrics }) => {
 
 // TODO: on mount then update --> fetch the latest measurements. Then, add the subscription received data to the 
 // graph data model
-const LineChart = ({ metric, getGraphMetrics }) => {
-  if (!getGraphMetrics.length) {
+const LineChart = ({ metric, getGraphMetrics = [] }) => {
+  if (!getGraphMetrics || !getGraphMetrics.length) {
     return null
   }
   const metricData = transformChartData({ metric, getGraphMetrics })
