@@ -14,7 +14,6 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     const multipleMeasurements = selectedMetrics && selectedMetrics.reduce((currStr, metric) => {
-      // return ({ metricName: `${metric.value}` })
       return currStr += `{ metricName: "${metric.value}", after: ${dayjs().subtract(1, 'minute').toDate().getTime()} },`
     }, '') || ''
     const input = `[${multipleMeasurements}]`

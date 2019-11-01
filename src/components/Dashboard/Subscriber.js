@@ -18,7 +18,6 @@ const subscriptionClient = new SubscriptionClient(
 const client = createClient({
   url: 'https://react.eogresources.com/graphql',
   exchanges: [
-    debugExchange,
     cacheExchange,
     fetchExchange,
     subscriptionExchange({
