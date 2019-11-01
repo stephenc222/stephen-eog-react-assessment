@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/stephen-eog-react-assessment/precache-manifest.6b8f353d81d6ac8e2b42aa7e07d86464.js"
+  "/stephen-eog-react-assessment/precache-manifest.0f7f2a28b4bc460d9ce285029f6b0a97.js"
 );
 
 self.addEventListener('message', (event) => {
