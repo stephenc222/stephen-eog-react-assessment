@@ -10,7 +10,7 @@
     "apollo-client": "^2.6.4",
     "apollo-link-http": "^1.5.16",
     "apollo-link-ws": "^1.0.19",
-    "chart.js": "^2.9.1",
+    "chart.js": "^2.9.4",
     "dayjs": "^1.8.16",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
